@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ph-changelog-remote"
+version = "0.1.0"
+description = "Hardened remote changelog retrieval for ph-changelog"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["ph-changelog"]
+
+[project.scripts]
+ph-changelog-remote = "ph_changelog_remote.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ph_changelog_remote"]
+
+[tool.uv.sources]
+ph-changelog = { workspace = true }

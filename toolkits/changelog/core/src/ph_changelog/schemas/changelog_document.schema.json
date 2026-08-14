@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ph-changelog machine document",
+  "type": "object",
+  "required": ["format", "schema_version", "source", "artifact", "document", "validation"],
+  "properties": {
+    "format": {"const": "ph-changelog-document"},
+    "schema_version": {"const": 1},
+    "source": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "path"],
+          "properties": {
+            "kind": {"const": "file"},
+            "path": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["kind"],
+          "properties": {"kind": {"const": "stdin"}},
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "requested_url",
+            "final_url",
+            "query_redacted",
+            "status",
+            "content_type",
+            "etag",
+            "last_modified"
+          ],
+          "properties": {
+            "kind": {"const": "http"},
+            "requested_url": {"type": "string", "minLength": 1},
+            "final_url": {"type": "string", "minLength": 1},
+            "query_redacted": {"type": "boolean"},
+            "status": {"const": 200},
+            "content_type": {"type": ["string", "null"]},
+            "etag": {"type": ["string", "null"]},
+            "last_modified": {"type": ["string", "null"]}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "artifact": {
+      "type": "object",
+      "required": ["encoding", "utf8_bom", "byte_length", "sha256", "raw_text"],
+      "properties": {
+        "encoding": {"const": "utf-8"},
+        "utf8_bom": {"type": "boolean"},
+        "byte_length": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "raw_text": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "document": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["preamble", "releases"],
+          "properties": {
+            "preamble": {"type": "string"},
+            "releases": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/release"}
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "required": ["profile", "valid", "issues"],
+      "properties": {
+        "profile": {"type": "string", "minLength": 1},
+        "valid": {"type": "boolean"},
+        "issues": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/issue"}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "release": {
+      "type": "object",
+      "required": ["kind", "label", "version", "date", "line", "intro", "sections"],
+      "properties": {
+        "kind": {"enum": ["unreleased", "release", "invalid"]},
+        "label": {"type": "string"},
+        "version": {"type": ["string", "null"]},
+        "date": {"type": ["string", "null"]},
+        "line": {"type": "integer", "minimum": 1},
+        "intro": {"type": "string"},
+        "sections": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/section"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "section": {
+      "type": "object",
+      "required": ["name", "line", "body", "entries", "unparsed_lines"],
+      "properties": {
+        "name": {"type": "string"},
+        "line": {"type": "integer", "minimum": 1},
+        "body": {"type": "string"},
+        "entries": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/entry"}
+        },
+        "unparsed_lines": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "entry": {
+      "type": "object",
+      "required": ["markdown", "text"],
+      "properties": {
+        "markdown": {"type": "string"},
+        "text": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "required": ["code", "message", "line", "severity"],
+      "properties": {
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "line": {"type": ["integer", "null"], "minimum": 1},
+        "severity": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

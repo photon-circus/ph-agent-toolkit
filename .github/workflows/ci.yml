@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python-version }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.12.2"
+          enable-cache: true
+
+      - name: Synchronize workspace
+        run: uv sync --all-packages --locked
+
+      - name: Lint
+        run: uv run --locked ruff check .
+
+      - name: Check formatting
+        run: uv run --locked ruff format --check .
+
+      - name: Test deterministic changelog core
+        run: uv run --locked python -m unittest discover -s toolkits/changelog/core/tests -v
+
+      - name: Test changelog agent package
+        run: uv run --locked python -m unittest discover -s toolkits/changelog/agent/tests -v
+
+      - name: Test remote changelog adapter
+        run: uv run --locked python -m unittest discover -s toolkits/changelog/remote/tests -v

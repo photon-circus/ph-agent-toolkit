@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ph-changelog"
+version = "0.1.0"
+description = "Deterministic changelog inspection, validation, mutation, and semantic merge tooling"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+ph-changelog = "ph_changelog.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ph_changelog"]

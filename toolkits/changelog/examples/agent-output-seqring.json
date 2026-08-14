@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "entries": [
+    {
+      "section": "Fixed",
+      "text": "`SeqRing::poll_up_to` now samples its drain target once at entry, so continuous producer activity cannot extend a single poll indefinitely; publications arriving after that snapshot wait for the next call. The bounded behavior is pinned by unit tests and Loom models.",
+      "fact_ids": ["F1", "F2", "F3", "F4", "F5"]
+    }
+  ]
+}

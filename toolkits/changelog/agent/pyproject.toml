@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ph-changelog-agent"
+version = "0.1.0"
+description = "Bounded changelog prose agent for ph-changelog"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["ph-changelog"]
+
+[project.scripts]
+ph-changelog-agent = "ph_changelog_agent.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ph_changelog_agent"]
+
+[tool.uv.sources]
+ph-changelog = { workspace = true }

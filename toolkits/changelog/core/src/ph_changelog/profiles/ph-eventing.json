@@ -1,0 +1,22 @@
+{
+  "name": "ph-eventing",
+  "allowed_sections": [
+    "Added",
+    "Changed",
+    "Deprecated",
+    "Fixed",
+    "Removed",
+    "Security",
+    "Documentation",
+    "Known issues"
+  ],
+  "strict_from_version": "0.3.0",
+  "required_unreleased_sections": [],
+  "required_release_sections": [],
+  "allow_empty_unreleased": true,
+  "section_entries_must_be_bullets": true,
+  "protect_released_history": true,
+  "breaking_prefix": "**Breaking:**",
+  "release_summary_prefix": "**What this release delivers.**",
+  "require_release_summary": true
+}

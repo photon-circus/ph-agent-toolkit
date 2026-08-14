@@ -1,0 +1,42 @@
+[project]
+name = "ph-agent-toolkit"
+version = "0.1.0"
+description = "Reusable, bounded toolkits for agent-assisted Photon Circus development"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+    "ph-changelog",
+    "ph-changelog-agent",
+    "ph-changelog-remote",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8.0,<1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+ph-changelog = { workspace = true }
+ph-changelog-agent = { workspace = true }
+ph-changelog-remote = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "toolkits/changelog/core",
+    "toolkits/changelog/agent",
+    "toolkits/changelog/remote",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ph_changelog", "ph_changelog_agent", "ph_changelog_remote"]

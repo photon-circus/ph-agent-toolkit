@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "task": "changelog_update",
+  "target": "Unreleased",
+  "change": {
+    "component": "SeqRing",
+    "kind": "fixed",
+    "breaking": false,
+    "public_behavior_changed": true
+  },
+  "facts": [
+    {"id": "F1", "text": "SeqRing::poll_up_to previously re-read the newest published sequence every loop iteration."},
+    {"id": "F2", "text": "Under continuous overwrite, that behavior could extend one poll indefinitely."},
+    {"id": "F3", "text": "The new implementation samples the drain target once at entry."},
+    {"id": "F4", "text": "Items published after the snapshot are handled by the next call."},
+    {"id": "F5", "text": "The bounded behavior is pinned by unit tests and Loom models."}
+  ],
+  "target_sections": ["Fixed"],
+  "allowed_claims": [
+    "bounded per call",
+    "samples the drain target once at entry",
+    "unit tested",
+    "Loom modelled"
+  ],
+  "forbidden_claims": ["wait-free", "lossless", "constant instruction count"],
+  "evidence": ["unit tests", "Loom"],
+  "constraints": {
+    "modify_released_history": false,
+    "max_entries": 1
+  }
+}

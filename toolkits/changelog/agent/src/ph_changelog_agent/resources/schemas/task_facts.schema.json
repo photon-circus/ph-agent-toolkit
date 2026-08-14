@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://photon-circus.local/schemas/changelog-task-facts-v1.json",
+  "title": "Changelog task facts",
+  "type": "object",
+  "required": ["schema_version", "task", "target", "facts", "target_sections", "constraints"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "task": {"const": "changelog_update"},
+    "target": {"const": "Unreleased"},
+    "change": {
+      "type": "object",
+      "properties": {
+        "component": {"type": "string"},
+        "kind": {"type": "string"},
+        "breaking": {"type": "boolean"},
+        "public_behavior_changed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "facts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "text": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "target_sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "allowed_claims": {
+      "description": "Supervisor guidance for the prose model; not semantically enforced after generation.",
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "forbidden_claims": {
+      "description": "Literal fragments rejected case-insensitively in generated entry text.",
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "constraints": {
+      "type": "object",
+      "required": ["modify_released_history", "max_entries"],
+      "properties": {
+        "modify_released_history": {"const": false},
+        "max_entries": {"type": "integer", "minimum": 1, "maximum": 8}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
