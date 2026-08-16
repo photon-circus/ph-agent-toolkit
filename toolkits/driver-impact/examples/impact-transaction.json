@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "task": "driver_change_impact",
+  "snapshot": {
+    "repository": "/workspace/ph-example-driver",
+    "base": {"requested": "HEAD", "commit": "1111111111111111111111111111111111111111"},
+    "target": {"kind": "commit", "commit": "2222222222222222222222222222222222222222"}
+  },
+  "profile": {"name": "photon-circus-driver-v1", "schema_version": 1, "sha256": "0000000000000000000000000000000000000000000000000000000000000000"},
+  "packages": [{"name": "ph-example-driver", "manifest": "Cargo.toml"}],
+  "changes": [
+    {
+      "id": "C-001", "path": "src/driver.rs", "old_path": null, "status": "M",
+      "old_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "new_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "binary": false, "patch": "@@ -1 +1 @@\n-old\n+new\n", "patch_truncated": false,
+      "rule_ids": ["driver.transport"], "domains": ["driver_runtime", "transaction_sequencing"]
+    }
+  ],
+  "domains": ["driver_runtime", "transaction_sequencing"],
+  "authority_index": [
+    {
+      "id": "A-0001", "path": "docs/INVARIANTS.md", "kind": "heading",
+      "heading_path": ["Invariants", "I-5 Enable last"], "text": "I-5 Enable last",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "line": 18, "role": "invariants"
+    }
+  ],
+  "obligations": [
+    {
+      "id": "O-001", "kind": "transaction_test_review", "strength": "required",
+      "reason": "driver transport or operation sequencing changed", "rule_id": "driver.transport",
+      "change_refs": ["C-001"], "authority_refs": ["A-0001"],
+      "checks": ["exact bus traffic and ordering", "failure injection at every transaction boundary"]
+    }
+  ],
+  "unclassified": [], "ignored_paths": [], "suggested_commands": ["cargo test"], "warnings": [],
+  "result": {"status": "review_required", "meaning": "changed surfaces require review; acceptability was not evaluated"}
+}

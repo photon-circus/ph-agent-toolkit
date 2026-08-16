@@ -18,6 +18,13 @@ Versioning.
   source bytes, semantic releases and entries, and profile validation issues.
 - Add offline `ph-changelog inspect` and a separate bounded
   `ph-changelog-remote fetch` adapter for local and remote snapshots.
+- Add `ph-driver-impact`, a deterministic read-only inspector for local driver
+  repository changes, with snapshot-safe Git comparison, profile-backed impact
+  obligations, structural contract references, and versioned JSON output.
+- Add `ph-driver-impact-agent`, a bounded LM Studio-compatible semantic mapper
+  that accepts only core-supplied references, rechecks worktree snapshots, and
+  preserves supervisor authority over ambiguity, evidence, and capability
+  claims.
 
 ### Changed
 

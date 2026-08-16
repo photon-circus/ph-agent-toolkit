@@ -21,6 +21,14 @@ The toolkit does not make a model provider trustworthy. Callers remain
 responsible for endpoint access controls and for excluding secrets from agent
 facts and prompts.
 
+`ph-driver-impact` reports contain source diff hunks and repository paths and
+must be protected as source material. Its agent companion accepts only an
+uncredentialed loopback HTTP origin, caps the projected prompt and provider
+response, and rechecks the repository snapshot before and after a model call.
+Those controls do not make the local model trustworthy or remove secrets from
+the inspected diff. Review repository contents before supplying an impact
+document to any model process.
+
 `ph-changelog-remote` makes an outbound request only when its `fetch` command
 is invoked. Treat supplied URLs as trusted operator input: do not let model
 output choose them without supervisor validation. The adapter bounds response

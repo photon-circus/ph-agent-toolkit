@@ -60,6 +60,30 @@ ph-changelog-agent   --->  ph-changelog  <---  ph-changelog-remote
        model I/O           offline core          HTTP(S) I/O
 ```
 
+## Driver change-impact capability
+
+`ph-driver-impact` owns bounded local Git observation, content snapshots,
+profile validation, changed-surface classification, Markdown authority
+indexing, coupled-edit obligations, and stable machine/human rendering. It is
+offline and read-only. A `review_required` result means that a profile rule was
+triggered; it is not a correctness verdict.
+
+`ph-driver-impact-agent` owns bounded packet projection, prompts, local model
+transport, semantic-output validation, and pre/post-model snapshot checks. It
+may connect only change, authority, and obligation IDs supplied by the core.
+It cannot run checks, mutate a repository, interpret physical evidence, or
+promote a capability.
+
+```text
+ph-driver-impact-agent  --->  ph-driver-impact
+      local model              offline inspection
+```
+
+The initial capability compares local Git states only. Intent-only analysis,
+remote revision retrieval, datasheet extraction, check execution, public API
+diffing, HIL evidence adjudication, and code mutation are separate future
+capabilities rather than implicit authority of the inspector.
+
 ## Adding a capability
 
 Add `toolkits/<capability>/core` first. Define its input/output and refusal

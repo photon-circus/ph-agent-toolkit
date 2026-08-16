@@ -8,6 +8,8 @@ members = [
     "ph-changelog",
     "ph-changelog-agent",
     "ph-changelog-remote",
+    "ph-driver-impact",
+    "ph-driver-impact-agent",
 ]
 
 [[package]]
@@ -18,6 +20,8 @@ dependencies = [
     { name = "ph-changelog" },
     { name = "ph-changelog-agent" },
     { name = "ph-changelog-remote" },
+    { name = "ph-driver-impact" },
+    { name = "ph-driver-impact-agent" },
 ]
 
 [package.dev-dependencies]
@@ -30,6 +34,8 @@ requires-dist = [
     { name = "ph-changelog", editable = "toolkits/changelog/core" },
     { name = "ph-changelog-agent", editable = "toolkits/changelog/agent" },
     { name = "ph-changelog-remote", editable = "toolkits/changelog/remote" },
+    { name = "ph-driver-impact", editable = "toolkits/driver-impact/core" },
+    { name = "ph-driver-impact-agent", editable = "toolkits/driver-impact/agent" },
 ]
 
 [package.metadata.requires-dev]
@@ -61,6 +67,22 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [{ name = "ph-changelog", editable = "toolkits/changelog/core" }]
+
+[[package]]
+name = "ph-driver-impact"
+version = "0.1.0"
+source = { editable = "toolkits/driver-impact/core" }
+
+[[package]]
+name = "ph-driver-impact-agent"
+version = "0.1.0"
+source = { editable = "toolkits/driver-impact/agent" }
+dependencies = [
+    { name = "ph-driver-impact" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "ph-driver-impact", editable = "toolkits/driver-impact/core" }]
 
 [[package]]
 name = "ruff"

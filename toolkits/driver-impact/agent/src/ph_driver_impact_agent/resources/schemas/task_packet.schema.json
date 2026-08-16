@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://photon-circus.local/schemas/driver-impact-task-packet-v1.json",
+  "title": "Bounded driver impact semantic task packet",
+  "type": "object",
+  "required": ["schema_version", "task", "source_snapshot", "profile", "packages", "changes", "domains", "authority", "authority_omitted", "obligations", "unclassified", "warnings", "constraints"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "task": {"const": "map_driver_change_impact"},
+    "source_snapshot": {"type": "object"},
+    "profile": {"type": "object"},
+    "packages": {"type": "array", "items": {"type": "object"}},
+    "changes": {"type": "array", "items": {"type": "object"}},
+    "domains": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "authority": {"type": "array", "items": {"type": "object"}},
+    "authority_omitted": {"type": "integer", "minimum": 0},
+    "obligations": {"type": "array", "items": {"type": "object"}},
+    "unclassified": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "constraints": {
+      "type": "object",
+      "required": ["read_only", "checks_executed", "capability_promotion_allowed", "invented_references_allowed"],
+      "properties": {
+        "read_only": {"const": true},
+        "checks_executed": {"const": false},
+        "capability_promotion_allowed": {"const": false},
+        "invented_references_allowed": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -23,6 +23,8 @@ manages changelogs.
 | Changelog machine format | `toolkits/changelog/MACHINE_FORMAT.md` and packaged schema |
 | Remote retrieval behavior | `toolkits/changelog/remote/README.md` and tests |
 | Changelog agent contract | `toolkits/changelog/agent/README.md`, schemas, and tests |
+| Driver impact behavior | `toolkits/driver-impact/core/README.md`, profile, schema, and tests |
+| Driver impact agent contract | `toolkits/driver-impact/agent/README.md`, schemas, and tests |
 
 When documents disagree, correct the non-owning document in the same change.
 
@@ -74,9 +76,13 @@ uv run --locked ruff check .
 uv run --locked python -m unittest discover -s toolkits/changelog/core/tests -v
 uv run --locked python -m unittest discover -s toolkits/changelog/agent/tests -v
 uv run --locked python -m unittest discover -s toolkits/changelog/remote/tests -v
+uv run --locked python -m unittest discover -s toolkits/driver-impact/core/tests -v
+uv run --locked python -m unittest discover -s toolkits/driver-impact/agent/tests -v
 uv run --locked ph-changelog --help
 uv run --locked ph-changelog-agent --help
 uv run --locked ph-changelog-remote --help
+uv run --locked ph-driver-impact --help
+uv run --locked ph-driver-impact-agent --help
 ```
 
 Use uv for every Python command in documentation, scripts, and automation. Do
@@ -103,6 +109,8 @@ not restore source-path launchers or bare `python` entry points.
 | Built-in profile or heading grammar | parser, validator, operations, merge tests |
 | Packaged resource path | installed-resource tests and CLI defaults |
 | Workspace dependency | member pyprojects, root sources, `uv.lock` |
+| Driver-impact profile rule | core tests, examples, both driver-impact READMEs |
+| Driver-impact agent contract | agent schemas, prompt, examples, and contract tests |
 
 ## Definition of done
 

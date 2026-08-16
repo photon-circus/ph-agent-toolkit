@@ -5,8 +5,8 @@ for agent-assisted development across Photon Circus repositories. Each
 toolkit keeps deterministic inspection and mutation code separate from model
 prompts, contracts, and providers.
 
-The repository is in early development. The first capability is changelog
-management, migrated from the former `ph-doc-prototype`.
+The repository is in early development. It currently provides changelog
+management and read-only driver change-impact inspection.
 
 ## Design boundaries
 
@@ -29,6 +29,9 @@ toolkits/changelog/agent/     ph-changelog-agent contracts/runtime and tests
 toolkits/changelog/remote/    bounded HTTP(S) retrieval adapter and tests
 toolkits/changelog/examples/  supervisor and agent-output examples
 toolkits/changelog/integrations/ downstream Git and GitHub templates
+toolkits/driver-impact/core/    ph-driver-impact deterministic inspector
+toolkits/driver-impact/agent/   bounded local semantic mapper
+toolkits/driver-impact/examples/ versioned input/output examples
 ```
 
 The dependency direction is:
@@ -37,6 +40,13 @@ The dependency direction is:
 ph-changelog-agent   --->  ph-changelog  <---  ph-changelog-remote
        model I/O           offline document          HTTP(S) I/O
                               operations
+```
+
+The driver-impact dependency direction is:
+
+```text
+ph-driver-impact-agent  --->  ph-driver-impact
+      local model              offline/read-only
 ```
 
 See [Architecture](docs/ARCHITECTURE.md) for the ownership rules and
@@ -72,12 +82,29 @@ Inspect the command surfaces:
 uv run --locked ph-changelog --help
 uv run --locked ph-changelog-agent --help
 uv run --locked ph-changelog-remote --help
+uv run --locked ph-driver-impact --help
+uv run --locked ph-driver-impact-agent --help
 ```
 
-Only the agent command contacts a model provider. The initial provider is a
-local LM Studio-compatible endpoint and defaults to `http://127.0.0.1:1234`.
-The separate remote command makes a request only when `fetch` is explicitly
-invoked; it may follow the bounded redirects described in its
+Inspect a local driver worktree without running checks or contacting a model:
+
+```bash
+uv run --locked ph-driver-impact inspect \
+  --repo ../ph-ads1115-adc \
+  --base HEAD \
+  --target worktree \
+  --output impact.json
+```
+
+A valid report that requires review exits `3`. The optional agent command can
+map that report semantically using an LM Studio-compatible local endpoint while
+retaining exact core references and supervisor-only decisions.
+
+Only the `*-agent` commands contact a model provider. Their initial provider is
+LM Studio-compatible and defaults to `http://127.0.0.1:1234`; the driver-impact
+agent additionally enforces a loopback origin. The separate remote command
+makes a request only when `fetch` is explicitly invoked; it may follow the
+bounded redirects described in its
 [README](toolkits/changelog/remote/README.md).
 
 ## Development checks
@@ -88,6 +115,8 @@ uv run --locked ruff check .
 uv run --locked python -m unittest discover -s toolkits/changelog/core/tests -v
 uv run --locked python -m unittest discover -s toolkits/changelog/agent/tests -v
 uv run --locked python -m unittest discover -s toolkits/changelog/remote/tests -v
+uv run --locked python -m unittest discover -s toolkits/driver-impact/core/tests -v
+uv run --locked python -m unittest discover -s toolkits/driver-impact/agent/tests -v
 ```
 
 Repository operating rules are in [AGENTS.md](AGENTS.md). Contributions are

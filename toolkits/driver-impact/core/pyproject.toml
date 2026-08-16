@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ph-driver-impact"
+version = "0.1.0"
+description = "Deterministic, read-only change-impact inspection for contract-first driver repositories"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+ph-driver-impact = "ph_driver_impact.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ph_driver_impact"]

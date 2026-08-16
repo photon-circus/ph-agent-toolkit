@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "name": "photon-circus-driver-v1",
+  "documents": [
+    {"role": "repository_policy", "path": "AGENTS.md", "required": false},
+    {"role": "hardware_contract", "path": "docs/HARDWARE_CONTRACT.md", "required": false, "stable_ids": true},
+    {"role": "architecture", "path": "docs/ARCHITECTURE.md", "required": false},
+    {"role": "api_contract", "path": "docs/API_CONTRACT.md", "required": false, "stable_ids": true},
+    {"role": "invariants", "path": "docs/INVARIANTS.md", "required": false, "stable_ids": true},
+    {"role": "decisions", "path": "docs/DECISIONS.md", "required": false},
+    {"role": "test_plan", "path": "docs/TEST_PLAN.md", "required": false, "stable_ids": true},
+    {"role": "capability_matrix", "path": "docs/CAPABILITY_MATRIX.md", "required": false, "stable_ids": true},
+    {"role": "implementation_plan", "path": "docs/IMPLEMENTATION_PLAN.md", "required": false},
+    {"role": "hil_evidence", "path": "docs/HIL_EVIDENCE_PROTOCOL.md", "required": false},
+    {"role": "hil_circuit", "path": "docs/HIL_TEST_CIRCUIT.md", "required": false},
+    {"role": "security", "path": "SECURITY.md", "required": false},
+    {"role": "readme", "path": "README.md", "required": false},
+    {"role": "changelog", "path": "CHANGELOG.md", "required": false}
+  ],
+  "ignored": [".git/**", "target/**", "**/target/**", ".ruff_cache/**", "**/__pycache__/**"],
+  "limits": {
+    "max_files": 256,
+    "max_diff_bytes": 262144,
+    "max_file_bytes": 2097152,
+    "max_authority_entries": 4096,
+    "max_authority_text": 500
+  },
+  "rules": [
+    {
+      "id": "workspace.manifest",
+      "globs": ["Cargo.toml", "**/Cargo.toml", "Cargo.lock", "rust-toolchain.toml"],
+      "domains": ["workspace", "dependencies", "distribution"],
+      "obligations": [
+        {"kind": "dependency_policy_review", "strength": "required", "reason": "workspace dependency, feature, package, or toolchain input changed", "authority_roles": ["repository_policy", "decisions"], "checks": ["dependency scope and feature behavior", "lockfile consistency", "MSRV consistency"]},
+        {"kind": "public_change_record", "strength": "candidate", "reason": "manifest changes can alter the public build or distribution workflow", "authority_roles": ["readme", "changelog"], "checks": ["public setup and feature documentation", "Unreleased changelog entry"]}
+      ]
+    },
+    {
+      "id": "driver.public_api",
+      "globs": ["src/lib.rs", "crates/*/src/lib.rs", "crates/*/src/public.rs", "crates/*/src/api.rs"],
+      "domains": ["public_api", "semver"],
+      "obligations": [
+        {"kind": "api_contract_review", "strength": "required", "reason": "a public API or crate-root re-export candidate changed", "authority_roles": ["api_contract", "invariants"], "checks": ["public signatures and re-exports", "SemVer compatibility", "crate documentation"]},
+        {"kind": "public_change_record", "strength": "required", "reason": "public-surface candidates require an explicit changelog decision", "authority_roles": ["changelog", "readme"], "checks": ["Unreleased changelog entry or explicit no-public-change finding"]}
+      ]
+    },
+    {
+      "id": "driver.codec",
+      "globs": ["**/src/*register*.rs", "**/src/*codec*.rs", "**/src/config.rs", "**/src/scaling.rs", "**/src/timing.rs", "**/src/value*.rs"],
+      "domains": ["hardware_model", "codec"],
+      "obligations": [
+        {"kind": "hardware_contract_review", "strength": "required", "reason": "register, codec, scaling, timing, or value-model code changed", "authority_roles": ["hardware_contract", "invariants", "decisions"], "checks": ["datasheet-backed encodings", "reserved-bit behavior", "boundary and round-trip behavior"]},
+        {"kind": "pure_test_review", "strength": "required", "reason": "pure hardware-model changes require Level 1 regression coverage", "authority_roles": ["test_plan"], "checks": ["legal and illegal domains", "round trips", "boundary or exhaustive cases"]}
+      ]
+    },
+    {
+      "id": "driver.transport",
+      "globs": ["**/src/driver.rs", "**/src/transport.rs", "**/src/device.rs", "**/src/operations.rs"],
+      "domains": ["transaction_sequencing", "driver_runtime"],
+      "obligations": [
+        {"kind": "transaction_test_review", "strength": "required", "reason": "driver transport or operation sequencing changed", "authority_roles": ["architecture", "invariants", "test_plan"], "checks": ["exact bus traffic and ordering", "complete script consumption", "failure injection at every transaction boundary"]},
+        {"kind": "state_recovery_review", "strength": "candidate", "reason": "multi-step operations can alter device state before failure", "authority_roles": ["invariants", "test_plan", "api_contract"], "checks": ["stage-specific errors", "absence of later traffic after failure", "documented recovery context"]}
+      ]
+    },
+    {
+      "id": "driver.errors",
+      "globs": ["**/src/error.rs", "**/src/errors.rs"],
+      "domains": ["error_surface", "public_api"],
+      "obligations": [
+        {"kind": "error_contract_review", "strength": "required", "reason": "the error surface changed", "authority_roles": ["api_contract", "invariants", "test_plan"], "checks": ["concrete bus error preservation", "operation context", "public compatibility"]}
+      ]
+    },
+    {
+      "id": "driver.behavioral_model",
+      "globs": ["**/src/*fake*.rs", "**/src/model.rs", "**/src/model/**", "**/testing/**", "**/tests/*model*.rs"],
+      "domains": ["simulation", "behavioral_model"],
+      "obligations": [
+        {"kind": "model_independence_review", "strength": "required", "reason": "an autonomous fake or behavioral model changed", "authority_roles": ["test_plan", "hardware_contract", "capability_matrix"], "checks": ["independent derivation", "state transitions and side effects", "simulation claims remain distinct from physical claims"]}
+      ]
+    },
+    {
+      "id": "driver.tests",
+      "globs": ["**/tests/**", "tests-system/**"],
+      "domains": ["tests"],
+      "obligations": [
+        {"kind": "test_obligation_review", "strength": "candidate", "reason": "test coverage changed", "authority_roles": ["test_plan", "invariants"], "checks": ["test still traces to a stated obligation", "success and refusal paths remain covered"]}
+      ]
+    },
+    {
+      "id": "driver.hil",
+      "globs": ["hil/**", "apps/hil-runner/**", "tools/ph-hil-build/**"],
+      "domains": ["hil", "physical_evidence"],
+      "obligations": [
+        {"kind": "hil_contract_review", "strength": "required", "reason": "HIL plans, runner, fixture, or build boundary changed", "authority_roles": ["test_plan", "hil_evidence", "hil_circuit", "capability_matrix"], "checks": ["case and witness coverage", "safe fixture exit and restoration", "mock results remain ineligible for physical claims"]},
+        {"kind": "capability_claim_review", "strength": "supervisor_decision", "reason": "HIL changes can affect the interpretation of support evidence", "authority_roles": ["capability_matrix", "hil_evidence"], "checks": ["no automatic tier promotion", "retained evidence identity and eligibility"]}
+      ]
+    },
+    {
+      "id": "driver.evidence",
+      "globs": ["hardware-evidence/**"],
+      "domains": ["physical_evidence", "claims"],
+      "obligations": [
+        {"kind": "physical_evidence_review", "strength": "supervisor_decision", "reason": "retained hardware evidence changed", "authority_roles": ["hil_evidence", "capability_matrix", "security"], "checks": ["seal and provenance verification", "witness sufficiency", "capability promotion remains owner-reviewed"]}
+      ]
+    },
+    {
+      "id": "driver.vendor_sources",
+      "globs": ["docs/vendor/**", "datasheets/**"],
+      "domains": ["source_provenance", "hardware_contract"],
+      "obligations": [
+        {"kind": "source_pinning_review", "strength": "supervisor_decision", "reason": "a vendor source or source inventory changed", "authority_roles": ["hardware_contract", "decisions", "security"], "checks": ["document identity and redistribution policy", "affected hardware facts", "verification state"]}
+      ]
+    },
+    {
+      "id": "repository.automation",
+      "globs": [".github/**", ".cargo/**", "tools/**", "scripts/**"],
+      "domains": ["automation", "repository_policy"],
+      "obligations": [
+        {"kind": "automation_policy_review", "strength": "required", "reason": "validation, CI, packaging, or automation changed", "authority_roles": ["repository_policy", "readme", "security"], "checks": ["documented command surface", "publishing remains owner-only", "local and hosted gate consistency"]}
+      ]
+    },
+    {
+      "id": "repository.metadata",
+      "globs": [".gitattributes", ".gitignore", "clippy.toml", "rustfmt.toml", "CONTRIBUTING.md", "SECURITY.md"],
+      "domains": ["repository_policy"],
+      "obligations": [
+        {"kind": "repository_policy_review", "strength": "required", "reason": "repository metadata, lint policy, contribution policy, or security guidance changed", "authority_roles": ["repository_policy", "security", "readme"], "checks": ["repository-local command and policy consistency", "generated and retained artifact treatment"]}
+      ]
+    },
+    {
+      "id": "repository.contract_docs",
+      "globs": ["docs/*.md", "AGENTS.md"],
+      "domains": ["contracts", "documentation"],
+      "obligations": [
+        {"kind": "canonical_consistency_review", "strength": "required", "reason": "a normative contract or repository policy document changed", "authority_roles": ["repository_policy", "hardware_contract", "architecture", "api_contract", "invariants", "decisions", "test_plan", "capability_matrix", "implementation_plan"], "checks": ["owning document changed first", "non-owning documents remain consistent"]}
+      ]
+    },
+    {
+      "id": "repository.public_docs",
+      "globs": ["README.md", "CHANGELOG.md", "**/README.md", "examples/**"],
+      "domains": ["documentation", "release_record"],
+      "obligations": [
+        {"kind": "public_documentation_review", "strength": "candidate", "reason": "public documentation or release history changed", "authority_roles": ["readme", "changelog", "api_contract"], "checks": ["examples match installed commands and API", "released history remains protected"]}
+      ]
+    },
+    {
+      "id": "repository.distribution",
+      "globs": ["PACK_MANIFEST.md", "PACK_SHA256SUMS.txt", "**/RELEASE_CHECKLIST.md", "deny.toml", "LICENSE", "LICENSE.md"],
+      "domains": ["distribution", "release_policy"],
+      "obligations": [
+        {"kind": "distribution_review", "strength": "required", "reason": "package inventory, release checklist, dependency policy, or licensing changed", "authority_roles": ["repository_policy", "security", "readme", "changelog"], "checks": ["package contents and checksums", "dry-run-only publishing boundary", "release record consistency"]}
+      ]
+    },
+    {
+      "id": "driver.rust_other",
+      "globs": ["src/*.rs", "src/**/*.rs", "crates/*/src/*.rs", "crates/*/src/**/*.rs"],
+      "domains": ["implementation"],
+      "obligations": [
+        {"kind": "implementation_impact_review", "strength": "candidate", "reason": "driver implementation code changed outside a more specific rule", "authority_roles": ["architecture", "api_contract", "invariants", "test_plan"], "checks": ["affected contract and invariant", "smallest protecting regression test"]}
+      ]
+    }
+  ]
+}

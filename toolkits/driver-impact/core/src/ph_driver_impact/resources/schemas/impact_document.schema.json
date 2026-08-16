@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://photon-circus.local/schemas/driver-impact-document-v1.json",
+  "title": "Driver change-impact document",
+  "type": "object",
+  "required": ["schema_version", "task", "snapshot", "profile", "packages", "changes", "domains", "authority_index", "obligations", "unclassified", "ignored_paths", "suggested_commands", "warnings", "result"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "task": {"const": "driver_change_impact"},
+    "snapshot": {
+      "type": "object", "required": ["repository", "base", "target"],
+      "properties": {
+        "repository": {"type": "string", "minLength": 1},
+        "base": {"type": "object", "required": ["requested", "commit"], "properties": {"requested": {"type": "string", "minLength": 1}, "commit": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+        "target": {"oneOf": [
+          {"type": "object", "required": ["kind", "sha256"], "properties": {"kind": {"const": "worktree"}, "sha256": {"$ref": "#/$defs/digest"}}, "additionalProperties": false},
+          {"type": "object", "required": ["kind", "commit"], "properties": {"kind": {"const": "commit"}, "commit": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+        ]}
+      },
+      "additionalProperties": false
+    },
+    "profile": {"type": "object", "required": ["name", "schema_version", "sha256"], "properties": {"name": {"type": "string", "minLength": 1}, "schema_version": {"const": 1}, "sha256": {"$ref": "#/$defs/digest"}}, "additionalProperties": false},
+    "packages": {"type": "array", "items": {"$ref": "#/$defs/package"}},
+    "changes": {"type": "array", "items": {"$ref": "#/$defs/change"}},
+    "domains": {"$ref": "#/$defs/uniqueStrings"},
+    "authority_index": {"type": "array", "items": {"$ref": "#/$defs/authority"}},
+    "obligations": {"type": "array", "items": {"$ref": "#/$defs/obligation"}},
+    "unclassified": {"$ref": "#/$defs/uniqueStrings"},
+    "ignored_paths": {"$ref": "#/$defs/uniqueStrings"},
+    "suggested_commands": {"$ref": "#/$defs/uniqueStrings"},
+    "warnings": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "result": {"type": "object", "required": ["status", "meaning"], "properties": {"status": {"enum": ["clear", "review_required", "refused"]}, "meaning": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "uniqueStrings": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "package": {"type": "object", "required": ["name", "manifest"], "properties": {"name": {"type": "string", "minLength": 1}, "manifest": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+    "change": {
+      "type": "object", "required": ["id", "path", "old_path", "status", "old_sha256", "new_sha256", "binary", "patch", "patch_truncated", "rule_ids", "domains"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1}, "path": {"type": "string", "minLength": 1}, "old_path": {"type": ["string", "null"]},
+        "status": {"enum": ["A", "B", "C", "D", "M", "R", "T", "U", "X"]},
+        "old_sha256": {"oneOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]}, "new_sha256": {"oneOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "binary": {"type": "boolean"}, "patch": {"type": "string"}, "patch_truncated": {"type": "boolean"}, "rule_ids": {"$ref": "#/$defs/uniqueStrings"}, "domains": {"$ref": "#/$defs/uniqueStrings"}
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object", "required": ["id", "path", "kind", "heading_path", "text", "sha256", "line", "role"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "path": {"type": "string", "minLength": 1}, "kind": {"enum": ["heading", "table_row"]}, "heading_path": {"type": "array", "items": {"type": "string", "minLength": 1}}, "text": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/digest"}, "line": {"type": "integer", "minimum": 1}, "role": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    },
+    "obligation": {
+      "type": "object", "required": ["id", "kind", "strength", "reason", "rule_id", "change_refs", "authority_refs", "checks"],
+      "properties": {"id": {"type": "string", "minLength": 1}, "kind": {"type": "string", "minLength": 1}, "strength": {"enum": ["required", "candidate", "supervisor_decision", "informational"]}, "reason": {"type": "string", "minLength": 1}, "rule_id": {"type": "string", "minLength": 1}, "change_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "authority_refs": {"$ref": "#/$defs/uniqueStrings"}, "checks": {"$ref": "#/$defs/uniqueStrings"}},
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

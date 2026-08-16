@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ph-driver-impact-agent"
+version = "0.1.0"
+description = "Bounded local-model semantic mapper for deterministic driver impact documents"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["ph-driver-impact"]
+
+[project.scripts]
+ph-driver-impact-agent = "ph_driver_impact_agent.cli:main"
+
+[tool.uv.sources]
+ph-driver-impact = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ph_driver_impact_agent"]

@@ -1,0 +1,16 @@
+{
+  "status": "ok",
+  "impacts": [
+    {
+      "kind": "transaction_order",
+      "summary": "The changed operation may affect the contract's enable-last ordering.",
+      "change_refs": ["C-001"],
+      "authority_refs": ["A-0001"],
+      "obligation_refs": ["O-001"],
+      "recommended_action": "Review the exact scripted traffic and inject failure at each changed transaction boundary.",
+      "confidence": "medium",
+      "requires_supervisor": false
+    }
+  ],
+  "unresolved": []
+}

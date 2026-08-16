@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://photon-circus.local/schemas/driver-impact-agent-output-v1.json",
+  "title": "Driver impact semantic mapper output",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["status", "impacts", "unresolved"],
+      "properties": {
+        "status": {"const": "ok"},
+        "impacts": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["kind", "summary", "change_refs", "authority_refs", "obligation_refs", "recommended_action", "confidence", "requires_supervisor"],
+            "properties": {
+              "kind": {"enum": ["hardware_behavior", "public_api", "transaction_order", "error_surface", "test_coverage", "behavioral_model", "hil_evidence", "capability_claim", "documentation", "dependency", "unknown"]},
+              "summary": {"type": "string", "minLength": 1},
+              "change_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+              "authority_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+              "obligation_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+              "recommended_action": {"type": "string", "minLength": 1},
+              "confidence": {"enum": ["high", "medium", "low"]},
+              "requires_supervisor": {"const": false}
+            },
+            "additionalProperties": false
+          }
+        },
+        "unresolved": {"type": "array", "maxItems": 0}
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["status", "reason", "change_refs", "authority_refs"],
+      "properties": {
+        "status": {"const": "needs_supervisor"},
+        "reason": {"type": "string", "minLength": 1},
+        "change_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "authority_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  ]
+}
