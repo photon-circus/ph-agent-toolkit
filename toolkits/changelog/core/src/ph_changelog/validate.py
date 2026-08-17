@@ -1,4 +1,4 @@
-"""Deterministic changelog validation."""
+"""Current structural and profile-policy checks for changelog text."""
 
 from __future__ import annotations
 

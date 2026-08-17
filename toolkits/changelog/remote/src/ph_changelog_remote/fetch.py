@@ -43,7 +43,7 @@ _DNS_SLOTS = threading.BoundedSemaphore(value=4)
 
 
 class RemoteFetchError(Exception):
-    """A safe, user-facing remote retrieval failure."""
+    """A query-redacted, user-facing remote retrieval failure."""
 
 
 class Transport(Protocol):

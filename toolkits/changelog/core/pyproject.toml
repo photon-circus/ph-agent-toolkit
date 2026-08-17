@@ -5,10 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "ph-changelog"
 version = "0.1.0"
-description = "Deterministic changelog inspection, validation, mutation, and semantic merge tooling"
+description = "Experimental source-only changelog boundary concepts and executable sketches"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
+classifiers = [
+    "Private :: Do Not Upload",
+]
 dependencies = []
 
 [project.scripts]

@@ -1,4 +1,4 @@
-"""Deterministic changelog tooling for Photon Circus repositories."""
+"""Experimental changelog boundary concepts for Photon Circus repositories."""
 
 from .machine import deconstruct_changelog, render_machine_json
 

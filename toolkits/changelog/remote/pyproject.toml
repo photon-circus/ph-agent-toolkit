@@ -5,10 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "ph-changelog-remote"
 version = "0.1.0"
-description = "Hardened remote changelog retrieval for ph-changelog"
+description = "Experimental source-only remote retrieval boundary sketch"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
+classifiers = [
+    "Private :: Do Not Upload",
+]
 dependencies = ["ph-changelog"]
 
 [project.scripts]

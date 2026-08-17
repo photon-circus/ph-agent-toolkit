@@ -1,12 +1,17 @@
 # `ph-doc-prototype` review and migration
 
+> [!NOTE]
+> This is an internal implementation and migration review, not an independent
+> security audit, threat-model validation, or production-fitness assessment.
+> Passing characterization tests provides limited regression evidence only.
+
 ## Baseline reviewed
 
 The prototype contained a dependency-free Python changelog parser, validator,
 normalizer, structured insertion tool, semantic three-way merge, supervisor
-fact contract, bounded LM Studio prose worker, profiles, schemas, examples,
-and integration templates. Its 18 characterization tests passed on Python
-3.14.7 before migration.
+fact contract, authority-limited LM Studio prose-worker sketch, profiles,
+schemas, examples, and integration templates. Its 18 characterization tests
+passed on Python 3.14.7 before migration.
 
 It was not uv-managed in operation: `[tool.uv] package = false` was paired with
 no lockfile or console entry point, and its README, shell scripts, GitHub
@@ -37,9 +42,11 @@ documented Python execution goes through `uv run --locked`.
 
 The migration also packages built-in profiles and agent resources, uses
 byte-preserving UTF-8 file I/O, supports both bracketed and unbracketed Keep a
-Changelog headings, rejects unsafe merge inputs and duplicate entries, aligns
-agent validation with its schemas, and makes agent application snapshot-checked
-and atomic.
+Changelog headings, refuses the currently recognized ambiguous merge inputs
+and duplicate entries, aligns handwritten contract checks with the current
+schemas, and compares the changelog snapshot before a same-directory
+replacement. Residual races and filesystem assumptions remain; see
+[the incubator trust model](../STATUS.md).
 
 ## Deliberate remaining scope
 

@@ -1,15 +1,21 @@
 # Changelog toolkit
 
-The changelog toolkit treats `CHANGELOG.md` as a protected structured artifact
-while keeping prose generation bounded and optional.
+> [!WARNING]
+> **Incubator-only experiment.** These packages are source examples, not
+> trusted or supported distributions, and are not intended for publication.
+> See the repository [STATUS.md](../../STATUS.md).
+
+The changelog toolkit experiments with representing `CHANGELOG.md` as a
+structured artifact while keeping model-generated prose in a separate,
+optional path.
 
 ## Packages
 
 | Package | Command | Responsibility |
 | --- | --- | --- |
-| `core/` (`ph-changelog`) | `ph-changelog` | Offline parsing, validation, normalization, insertion, and semantic merge |
-| `agent/` (`ph-changelog-agent`) | `ph-changelog-agent` | Fact/output contracts, prompt assembly, provider calls, and validated application |
-| `remote/` (`ph-changelog-remote`) | `ph-changelog-remote` | Bounded HTTP(S) retrieval and machine-document output |
+| `core/` (`ph-changelog`) | `ph-changelog` | Offline parsing, policy checks, normalization, insertion, and narrow merge experiments |
+| `agent/` (`ph-changelog-agent`) | `ph-changelog-agent` | Fact/output contract checks, prompt assembly, provider calls, and experimental application |
+| `remote/` (`ph-changelog-remote`) | `ph-changelog-remote` | Experimental HTTP(S) retrieval with current protocol and size checks |
 
 Both adapters depend on `ph-changelog`. The reverse dependencies are
 forbidden, and the agent and remote packages do not depend on one another.
@@ -37,21 +43,27 @@ The agent package includes its default skill, style guide, examples, and JSON
 schemas as installed resources. Callers can override the skill directory when
 testing a repository-specific style.
 
-## Agent authority boundary
+## Current agent authority experiment
 
 The supervisor supplies structured facts and authorizes target sections. The
-model returns prose plus the fact IDs supporting it. Deterministic code then:
+model returns a proposal plus the fact IDs it cites. The current packaged path
+then attempts to:
 
-1. validates the facts and output contract;
+1. validate the facts and output contract;
 2. refuses unauthorized sections, unknown fact citations, and explicitly
    forbidden literal claims;
 3. inserts entries without allowing the model to place Markdown;
 4. revalidates the complete changelog;
-5. checks for intervening file changes immediately before atomic replacement.
+5. compare the target bytes immediately before a same-directory replacement.
 
-The model never edits release headings or released history directly.
-`allowed_claims` guides the bounded prose model; deterministic validation cannot
-prove that arbitrary prose is semantically supported by a cited fact.
+The packaged contract exposes no direct released-history or heading edit to
+model output. That is not sandboxing or semantic verification.
+`allowed_claims` guides the prose model; contract checks cannot prove that
+arbitrary prose is factually true or semantically supported by a cited fact.
+
+Treat every successful result as an untrusted proposal. Use `--apply` only in a
+clean, reviewable, version-controlled copy after excluding secrets and
+accepting the configured provider boundary.
 
 ## Consumer integrations
 

@@ -1,13 +1,21 @@
 # ph-changelog-remote
 
-`ph-changelog-remote` is the network-bound adapter for the deterministic
+> [!WARNING]
+> **Incubator-only network experiment.** This adapter is not an SSRF defense,
+> network sandbox, trust boundary, or supported distribution, and it is not
+> intended for publication. Use only operator-reviewed URLs with host-level
+> egress controls. See the repository [STATUS.md](../../../STATUS.md).
+
+`ph-changelog-remote` is an experimental network-bound adapter for the offline
 `ph-changelog` package. It retrieves one raw changelog over a constrained
-HTTP request and emits the same versioned, lossless machine document as the
-core `inspect` command. The shared fields and compatibility rules are defined
-in the [machine-document contract](../MACHINE_FORMAT.md).
+HTTP request and emits the same experimental exact-snapshot machine document
+as the core `inspect` command. The current shared fields are described in the
+[machine-document contract](../MACHINE_FORMAT.md); they carry no compatibility
+promise.
 
 The command permits HTTPS by default. Plain HTTP requires an explicit
-`--allow-http`; it follows at most five validated redirects, and HTTPS can
+`--allow-http`; it follows at most five redirects that pass the current URL
+checks, and HTTPS can
 never downgrade to HTTP. All hops share one deadline, and redirect bodies are
 closed without being downloaded. Authentication, proxy configuration, custom
 headers, disabled TLS verification, compressed responses, HTML, and non-UTF-8
@@ -34,12 +42,16 @@ Supply a raw-file URL, not a repository HTML page. The defaults are a
 take precedence.
 
 The JSON is written to stdout when `--output` is omitted or is `-`. A file
-output is replaced atomically only after retrieval and deconstruction succeed.
-Exit status `0` means the fetched changelog is valid for the selected profile,
-`1` means JSON was emitted but validation found issues, and `2` means an
-operational failure occurred and no output file was replaced.
+output is written through a temporary sibling and operating-system replacement
+only after retrieval and deconstruction succeed. This is not a durable
+transaction. Exit status `0` means the fetched changelog passed the current
+parser and selected-profile checks, `1` means JSON was emitted with reported
+issues, and `2` means an operational failure occurred and no output file was
+replaced. None of those statuses is an assurance result.
 
 Query strings are sent when supplied, but are removed from source metadata and
 error messages. Do not use this command for authenticated or secret-bearing
-URLs. The adapter is not a network sandbox; apply host-level egress policy when
-URLs do not come directly from a trusted operator.
+URLs. Accept only URLs selected and reviewed by the operator, treat retrieved
+bytes as untrusted, and apply host-level egress policy. The current checks do
+not prevent access to every private, loopback, link-local, or otherwise
+sensitive address available from the host.

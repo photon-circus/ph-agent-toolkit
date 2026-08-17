@@ -1,4 +1,4 @@
-"""Command-line interface for deterministic changelog operations."""
+"""Experimental command-line interface for scoped changelog operations."""
 
 from __future__ import annotations
 
@@ -109,12 +109,14 @@ def _parse_add_operations(value: object) -> list[tuple[str, str, bool]]:
 def cmd_check(args: argparse.Namespace) -> int:
     text = _read(args.path)
     base = _read(args.base) if args.base else None
-    issues = validate_text(text, _profile(args), base_text=base)
+    profile = _profile(args)
+    issues = validate_text(text, profile, base_text=base)
     if issues:
         for issue in issues:
             print(issue, file=sys.stderr)
         return 1
-    print(f"OK: {args.path}")
+    scope = "released-history base compared" if args.base else "no --base history comparison"
+    print(f"CURRENT CHECKS PASSED ({profile.name}; {scope}): {args.path}")
     return 0
 
 
@@ -194,14 +196,18 @@ def cmd_merge(args: argparse.Namespace) -> int:
             print(issue, file=sys.stderr)
         return 2
     _write(args.output, result)
-    print(f"MERGED: {args.output}")
+    print(f"EXPERIMENTAL MERGE WROTE: {args.output}")
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ph-changelog",
-        description="Deterministic changelog inspection, validation, mutation, and merge tooling",
+        description="Experiment with deterministic changelog transforms under a selected profile",
+        epilog=(
+            "INCUBATOR: source-only experiment; not trusted or supported. "
+            "A successful check reports only the current structural and policy checks."
+        ),
     )
     parser.add_argument(
         "--profile",
@@ -210,7 +216,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    check = subparsers.add_parser("check", help="validate changelog structure and policy")
+    check = subparsers.add_parser("check", help="run current structure and policy checks")
     check.add_argument("path", nargs="?", default="CHANGELOG.md")
     check.add_argument("--base")
     check.set_defaults(func=cmd_check)

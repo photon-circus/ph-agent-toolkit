@@ -1,4 +1,4 @@
-"""CLI for hardened remote changelog retrieval and deconstruction."""
+"""CLI for an experimental remote-retrieval boundary."""
 
 from __future__ import annotations
 
@@ -65,7 +65,11 @@ def cmd_fetch(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ph-changelog-remote",
-        description="Fetch and deconstruct a remote changelog into versioned JSON",
+        description="Experimentally fetch and deconstruct a remote changelog snapshot",
+        epilog=(
+            "INCUBATOR: not an SSRF defense or network sandbox. Use only operator-reviewed "
+            "URLs and treat returned content as untrusted."
+        ),
     )
     parser.add_argument(
         "--profile",
@@ -74,7 +78,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    fetch = subparsers.add_parser("fetch", help="fetch one remote Markdown changelog")
+    fetch = subparsers.add_parser(
+        "fetch", help="fetch one operator-reviewed remote Markdown changelog"
+    )
     fetch.add_argument("url", help="raw Markdown URL")
     fetch.add_argument("--output", default="-", help="JSON file path or '-' for stdout")
     fetch.add_argument(

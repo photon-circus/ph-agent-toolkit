@@ -5,15 +5,17 @@
 
 ## What this is
 
-A uv-managed Python workspace of reusable task toolkits for agent-assisted
-work across Photon Circus repositories. A toolkit combines a deterministic
-core with optional bounded transport and agent layers. The first toolkit
+A living, source-only concept incubator for agent-assisted work across Photon
+Circus repositories. It is not a product, supported distribution, trusted
+implementation, or release candidate. A toolkit combines an experimental
+offline core with optional transport and agent layers. The first experiment
 manages changelogs.
 
 ## Canonical sources
 
 | Subject | Canonical source |
 | --- | --- |
+| Incubator status and trust vocabulary | `STATUS.md` |
 | Cross-toolkit boundaries | `docs/ARCHITECTURE.md` |
 | Prototype findings and migration decisions | `docs/PROTOTYPE_REVIEW.md` |
 | User-facing setup and commands | `README.md` |
@@ -28,10 +30,25 @@ When documents disagree, correct the non-owning document in the same change.
 
 ## Required reading
 
-1. `docs/ARCHITECTURE.md`
-2. The affected toolkit's README files
-3. `docs/PROTOTYPE_REVIEW.md` when changing the changelog toolkit
-4. The affected tests and schemas
+1. `STATUS.md`
+2. `docs/ARCHITECTURE.md`
+3. The affected toolkit's README files
+4. `docs/PROTOTYPE_REVIEW.md` when changing the changelog toolkit
+5. The affected tests and schemas
+
+## Public claim discipline
+
+- Always describe this repository as a living, source-only incubator.
+- Never describe it as production-ready, stable, supported, trusted, secure,
+  safe, hardened, audited, battle-tested, or on a path to package publication.
+- Scope every use of deterministic, bounded, contract-checked, atomic,
+  lossless, protected, or tested to the exact mechanism and residual
+  limitation. Follow the vocabulary in `STATUS.md`.
+- "Adopted" and "canonical" mean organizational ownership inside the current
+  experiment; they are not maturity labels.
+- Green CI is regression evidence, not a security review or readiness signal.
+- Removing `prototype` from a directory name does not mean the concept is
+  mature.
 
 ## Hard boundaries
 
@@ -116,6 +133,8 @@ not restore source-path launchers or bare `python` entry points.
 - [ ] `uv.lock` matches every dependency change.
 - [ ] Ruff format/lint checks and all test suites pass.
 - [ ] Public behavior is recorded under `CHANGELOG.md` → `[Unreleased]`.
+- [ ] Public wording still identifies the work as an incubator and does not
+      overstate trust, safety, support, or publication intent.
 
 ## Dependencies and publishing
 
@@ -123,5 +142,8 @@ Prefer the standard library. A runtime dependency needs a concrete contract or
 maintenance benefit and must stay in the narrowest package. Lock all changes
 with uv.
 
-Agents may build and test distributions locally but must not upload packages,
-create releases, or publish to a registry. Publishing is an owner action.
+All packages are source-only experiments and must retain the
+`Private :: Do Not Upload` classifier. Agents may build and test distributions
+locally but must not upload packages, create releases or tags, add publishing
+automation, or publish to a registry. A concept that is ready to graduate must
+move to a separately named repository through an explicit owner decision.
