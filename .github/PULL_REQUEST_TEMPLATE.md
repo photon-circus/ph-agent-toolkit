@@ -15,6 +15,17 @@ publication.
 What system boundary, ownership rule, failure model, or coordination idea does
 this change explore?
 
+## Origin and lifecycle
+
+- Originating Discussion or Issue:
+- Experiment dossier:
+- Current stage: `proposed`, `experiment`, `decision-needed`, `concluded`, or
+  `archived`
+- Proposed transition, if any:
+
+A merge records reviewed source changes. It does not conclude or promote the
+experiment automatically.
+
 ## Experiment and evidence
 
 What executable sketch, fixture, test, trace, or review result makes the idea
@@ -34,3 +45,7 @@ provider or platform gaps, and ways the idea could be superseded or removed.
       supported-version promise is introduced.
 - [ ] New network, model, filesystem, credential, or mutation surfaces are
       called out for human review.
+- [ ] The experiment dossier records non-guarantees, success and refusal cases,
+      observations, and the proposed next transition.
+- [ ] A maintainer, not an agent or passing check, explicitly owns any
+      `concluded` or `archived` transition.

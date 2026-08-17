@@ -1,0 +1,99 @@
+name: Scoped experiment
+description: Track an experiment that has been scoped from a Discussion.
+title: "[Experiment] "
+labels:
+  - "kind:experiment"
+  - "stage:experiment"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open-ended ideas belong in Discussions. This form is for a bounded, falsifiable next experiment.
+
+  - type: input
+    id: discussion
+    attributes:
+      label: Originating Discussion
+      description: Full URL to the Discussion where the concept was explored.
+      placeholder: "https://github.com/photon-circus/ph-agent-toolkit/discussions/..."
+    validations:
+      required: true
+
+  - type: input
+    id: base_revision
+    attributes:
+      label: Base revision
+      description: Commit SHA or immutable reference.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Boundary area
+      options:
+        - Supervisor, authority, or facts
+        - Agent contract or prompt
+        - Deterministic core
+        - Transport or remote I/O
+        - Integration or host environment
+        - Cross-layer
+    validations:
+      required: true
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Falsifiable hypothesis
+      description: State supporting and refuting observations.
+    validations:
+      required: true
+
+  - type: textarea
+    id: plan
+    attributes:
+      label: Minimal experiment
+      description: Describe the smallest implementation or procedure that tests the hypothesis.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_plan
+    attributes:
+      label: Evidence plan
+      description: What artifacts will be retained, and how can another person reproduce them?
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Failure paths and side effects
+      description: Include mutation, network, model/provider, secret, and compatibility risks.
+    validations:
+      required: true
+
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals and unproven claims
+    validations:
+      required: true
+
+  - type: textarea
+    id: completion
+    attributes:
+      label: Completion condition
+      description: What evidence ends this experiment, including a negative result?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Submission acknowledgement
+      options:
+        - label: This issue tracks an experiment, not a production commitment.
+          required: true
+        - label: The originating Discussion and relevant limitations are linked.
+          required: true

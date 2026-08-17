@@ -37,6 +37,7 @@ These are design hypotheses under active revision. Terms such as
 
 ```text
 docs/                         architecture and migration decisions
+experiments/                  dossiers for bounded, reproducible explorations
 toolkits/changelog/core/      offline transformation experiment and tests
 toolkits/changelog/agent/     ph-changelog-agent contracts/runtime and tests
 toolkits/changelog/remote/    explicit HTTP(S) retrieval experiment and tests
@@ -54,6 +55,29 @@ ph-changelog-agent   --->  ph-changelog  <---  ph-changelog-remote
 
 See [Architecture](docs/ARCHITECTURE.md) for the ownership rules and
 [Prototype review](docs/PROTOTYPE_REVIEW.md) for the migration rationale.
+
+## Discuss and develop ideas
+
+Use each GitHub surface for one stage of an idea:
+
+```text
+idea or question -> Discussion -> scoped experiment Issue -> draft PR
+                                                        -> decision record
+```
+
+- Start uncertain proposals, questions, experiment reports, and
+  counterexamples in [Discussions](https://github.com/photon-circus/ph-agent-toolkit/discussions).
+- Open an [Issue](https://github.com/photon-circus/ph-agent-toolkit/issues)
+  only when there is a reproducible defect or a bounded next experiment.
+- Use a draft pull request for code, fixtures, or evidence that implements the
+  scoped experiment.
+- Record provisional conclusions that will guide later work under
+  [`docs/decisions/`](docs/decisions/README.md).
+
+The lifecycle is defined in
+[`docs/EXPERIMENT_LIFECYCLE.md`](docs/EXPERIMENT_LIFECYCLE.md). Moving an item
+through that lifecycle never changes this repository's experimental assurance
+status.
 
 ## Experimental use only
 

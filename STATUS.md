@@ -86,6 +86,21 @@ This list is intentionally direct and non-exhaustive:
   consumer-controlled inputs. They can change or weaken policy and are not an
   assurance boundary.
 
+## Experiment lifecycle and authority
+
+Ideas may move through `proposed`, `experiment`, `decision-needed`,
+`concluded`, and `archived` lifecycle stages as described in
+[`docs/EXPERIMENT_LIFECYCLE.md`](docs/EXPERIMENT_LIFECYCLE.md). These stages
+describe activity and recorded observations, not quality or assurance. Every
+stage remains experimental and untrusted in this repository.
+
+Contributors and agents may propose lifecycle changes and draft decision
+records. Only a maintainer acting as supervisor may mark an experiment
+`concluded` or `archived`. No lifecycle stage authorizes package publication,
+a release, or representing this repository as supported. Only an explicit
+owner decision outside the ordinary experiment workflow may alter this public
+status or establish a separately supported extracted project.
+
 ## If you run an experiment
 
 Pin the exact commit, use a clean disposable branch, keep recoverable backups,

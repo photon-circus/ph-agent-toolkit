@@ -1,0 +1,95 @@
+name: Reproducible defect
+description: Report behavior that contradicts a current documented contract.
+title: "[Defect] "
+labels:
+  - "kind:defect"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a living, source-only incubator. Use Discussions for questions and ideas.
+        Do not submit vulnerabilities, secrets, or confidential inputs; follow SECURITY.md instead.
+
+  - type: input
+    id: revision
+    attributes:
+      label: Affected revision
+      description: Exact commit SHA.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      options:
+        - Changelog core
+        - Agent contract or provider
+        - Remote retrieval
+        - Integration template
+        - Documentation or metadata
+        - Cross-layer
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, uv, provider, filesystem, and other relevant versions.
+    validations:
+      required: true
+
+  - type: textarea
+    id: contract
+    attributes:
+      label: Current documented contract
+      description: Link or quote the specific current expectation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide commands using redacted, disposable inputs.
+      render: shell
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repeatability
+    attributes:
+      label: Repeatability
+      options:
+        - Every attempt
+        - Intermittent
+        - Observed once
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and known limitations
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Submission acknowledgement
+      options:
+        - label: I searched existing issues and discussions.
+          required: true
+        - label: This report contains no secrets or security-sensitive details.
+          required: true
+        - label: I reproduced this in a disposable or version-controlled copy.
+          required: true

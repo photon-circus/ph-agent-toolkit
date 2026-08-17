@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ideas, questions, and experiment reports
+    url: https://github.com/photon-circus/ph-agent-toolkit/discussions
+    about: Use Discussions for concepts, questions, experiment reports, and publicly discussable counterexamples.
+  - name: Security-sensitive findings
+    url: https://github.com/photon-circus/ph-agent-toolkit/security/policy
+    about: Do not open a public issue. Follow the repository's private reporting instructions.

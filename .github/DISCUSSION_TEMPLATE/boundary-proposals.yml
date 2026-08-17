@@ -1,0 +1,85 @@
+title: "[Boundary] "
+labels:
+  - "kind:idea"
+  - "stage:proposed"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is a living, source-only concept incubator, not a trusted implementation.
+        Proposals are hypotheses, not guarantees. Do not include secrets or confidential findings.
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Boundary area
+      options:
+        - Supervisor, authority, or facts
+        - Agent contract or prompt
+        - Deterministic core
+        - Transport or remote I/O
+        - Integration or host environment
+        - Cross-layer
+    validations:
+      required: true
+
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Proposed boundary
+      description: What should each side own, permit, or refuse?
+    validations:
+      required: true
+
+  - type: textarea
+    id: crossings
+    attributes:
+      label: Allowed crossings
+      description: What data, evidence, state, or authority may cross this boundary?
+    validations:
+      required: true
+
+  - type: textarea
+    id: failures
+    attributes:
+      label: Failure modes and counterexamples
+      description: How could this boundary fail, leak authority, or create false confidence?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Existing evidence
+      description: Link observations, tests, code, or prior experiments. State if there is none.
+    validations:
+      required: true
+
+  - type: textarea
+    id: unknowns
+    attributes:
+      label: Assumptions and unknowns
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request
+    attributes:
+      label: Requested response
+      options:
+        - Critique
+        - Counterexample
+        - Experiment collaborator
+        - Decision candidate
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Public discussion acknowledgement
+      options:
+        - label: I have included no secrets, private data, or security-sensitive reproduction details.
+          required: true
+        - label: I understand that this proposal does not establish safety, trust, or production readiness.
+          required: true

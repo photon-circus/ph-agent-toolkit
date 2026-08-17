@@ -8,6 +8,24 @@
 Read [AGENTS.md](AGENTS.md), [the architecture](docs/ARCHITECTURE.md), and the
 affected toolkit README before making a change.
 
+## Where contributions begin
+
+- Start a concept, question, experiment report, or publicly safe
+  counterexample in
+  [Discussions](https://github.com/photon-circus/ph-agent-toolkit/discussions).
+- Open an Issue only for a reproducible defect or a bounded experiment that
+  links its originating Discussion.
+- Use a draft pull request for the code, cases, observations, or documentation
+  that exercise the scoped experiment.
+- Record a provisional choice that will guide later experiments in an
+  [Experimental Decision Record](docs/decisions/README.md).
+
+The stages and transition requirements are defined in
+[the experiment lifecycle](docs/EXPERIMENT_LIFECYCLE.md). A merged pull request
+does not conclude an experiment or change its experimental assurance. Do not
+post secrets, private source, customer data, or security-sensitive
+reproduction details; follow [SECURITY.md](SECURITY.md) for private reporting.
+
 ## Development setup
 
 Install uv, clone the repository, and run:
