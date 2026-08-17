@@ -1,0 +1,102 @@
+title: "[Experiment] "
+labels:
+  - "kind:experiment"
+  - "stage:experiment"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report observations precisely and preserve negative results.
+        A successful experiment is evidence at a recorded revision and environment, not a general guarantee.
+
+  - type: input
+    id: revision
+    attributes:
+      label: Repository revision
+      description: Commit SHA or immutable reference.
+      placeholder: "19139c1583c126888dfa68d2d0f50d6051ef7dad"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, uv, model/provider, filesystem, and other relevant versions.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Boundary area
+      options:
+        - Supervisor, authority, or facts
+        - Agent contract or prompt
+        - Deterministic core
+        - Transport or remote I/O
+        - Integration or host environment
+        - Cross-layer
+    validations:
+      required: true
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Falsifiable hypothesis
+      description: What observation would support or refute it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: procedure
+    attributes:
+      label: Procedure
+      description: Provide enough detail for another person to repeat the experiment.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observations
+    attributes:
+      label: Observations
+      description: Separate observed behavior from interpretation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and artifacts
+      description: Link logs, tests, patches, traces, or other reviewable artifacts.
+    validations:
+      required: true
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations, confounders, and counterexamples
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproduction
+    attributes:
+      label: Reproduction status
+      options:
+        - Not independently attempted
+        - Partially reproduced
+        - Independently reproduced
+        - Could not reproduce
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Public discussion acknowledgement
+      options:
+        - label: I have included no secrets or confidential data.
+          required: true
+        - label: I have not presented these observations as a production, safety, or trust guarantee.
+          required: true

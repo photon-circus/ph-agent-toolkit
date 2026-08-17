@@ -1,0 +1,81 @@
+title: "[Counterexample] "
+labels:
+  - "kind:counterexample"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for publicly discussable negative results and boundary failures.
+        Do not disclose vulnerabilities, secrets, or exploit details here; follow SECURITY.md instead.
+
+  - type: input
+    id: revision
+    attributes:
+      label: Affected revision
+      description: Commit SHA or immutable reference.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Boundary area
+      options:
+        - Supervisor, authority, or facts
+        - Agent contract or prompt
+        - Deterministic core
+        - Transport or remote I/O
+        - Integration or host environment
+        - Cross-layer
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected local boundary
+      description: Cite the current document, contract, or behavior that set the expectation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed counterexample
+      description: What crossed, failed, or produced false confidence?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Use redacted, non-sensitive inputs.
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and containment
+      description: What is affected, and what limits the observed impact?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Link publicly safe logs, tests, traces, or artifacts. State what remains unverified.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Public disclosure acknowledgement
+      options:
+        - label: This is safe to discuss publicly and contains no secrets, private data, or exploit details.
+          required: true
+        - label: I understand that security-sensitive findings must be reported through SECURITY.md.
+          required: true

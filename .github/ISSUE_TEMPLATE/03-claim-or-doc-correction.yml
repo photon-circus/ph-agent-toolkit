@@ -1,0 +1,54 @@
+name: Claim or documentation correction
+description: Scope wording that overstates maturity, trust, evidence, or guarantees.
+title: "[Docs] "
+labels:
+  - "kind:documentation"
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: File path, line, CLI output, package metadata, or repository setting.
+      placeholder: "toolkits/changelog/remote/pyproject.toml:8"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_wording
+    attributes:
+      label: Current wording
+    validations:
+      required: true
+
+  - type: textarea
+    id: concern
+    attributes:
+      label: Why is the scope misleading or unclear?
+      description: Identify the maturity, trust, compatibility, evidence, or boundary implication.
+    validations:
+      required: true
+
+  - type: textarea
+    id: replacement
+    attributes:
+      label: Proposed scoped wording
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and residual limitation
+      description: State what supports the revised claim and what remains unproven.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Submission acknowledgement
+      options:
+        - label: The proposed wording preserves the living-incubator status.
+          required: true
+        - label: Strong terms such as bounded, deterministic, validated, atomic, lossless, or protected are explicitly scoped.
+          required: true

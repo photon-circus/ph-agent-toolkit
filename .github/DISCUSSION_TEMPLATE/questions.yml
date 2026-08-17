@@ -1,0 +1,63 @@
+title: "[Question] "
+labels:
+  - "kind:question"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Answers describe the current experiment and carry no support, compatibility, or response-time commitment.
+        Do not include secrets or confidential repository content.
+
+  - type: input
+    id: revision
+    attributes:
+      label: Relevant revision
+      description: Commit SHA, branch, or state "conceptual question."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Architecture or boundaries
+        - Changelog core
+        - Agent contract or provider
+        - Remote retrieval
+        - Integration templates
+        - Documentation or governance
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Ask one focused question.
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What have you already examined or tried?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context or output
+      description: Include only redacted, publicly discussable material.
+
+  - type: checkboxes
+    id: acknowledgement
+    attributes:
+      label: Public discussion acknowledgement
+      options:
+        - label: I have included no secrets or confidential data.
+          required: true
+        - label: I understand that answers describe experimental behavior, not supported guarantees.
+          required: true

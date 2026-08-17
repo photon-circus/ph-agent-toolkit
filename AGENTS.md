@@ -16,8 +16,11 @@ manages changelogs.
 | Subject | Canonical source |
 | --- | --- |
 | Incubator status and trust vocabulary | `STATUS.md` |
+| Experiment lifecycle and transition authority | `docs/EXPERIMENT_LIFECYCLE.md` |
 | Cross-toolkit boundaries | `docs/ARCHITECTURE.md` |
 | Prototype findings and migration decisions | `docs/PROTOTYPE_REVIEW.md` |
+| Experiment records and templates | `experiments/README.md` |
+| Provisional design decisions | `docs/decisions/README.md` |
 | User-facing setup and commands | `README.md` |
 | Released and pending changes | `CHANGELOG.md` |
 | Python dependencies | `pyproject.toml` and `uv.lock` |
@@ -31,10 +34,11 @@ When documents disagree, correct the non-owning document in the same change.
 ## Required reading
 
 1. `STATUS.md`
-2. `docs/ARCHITECTURE.md`
-3. The affected toolkit's README files
-4. `docs/PROTOTYPE_REVIEW.md` when changing the changelog toolkit
-5. The affected tests and schemas
+2. `docs/EXPERIMENT_LIFECYCLE.md`
+3. `docs/ARCHITECTURE.md`
+4. The affected toolkit's README files
+5. `docs/PROTOTYPE_REVIEW.md` when changing the changelog toolkit
+6. The affected tests and schemas
 
 ## Public claim discipline
 
@@ -49,6 +53,20 @@ When documents disagree, correct the non-owning document in the same change.
 - Green CI is regression evidence, not a security review or readiness signal.
 - Removing `prototype` from a directory name does not mean the concept is
   mature.
+
+## Lifecycle authority
+
+- Discussion reactions, issue labels, passing checks, model output, and merged
+  pull requests do not advance an experiment automatically.
+- Contributors and agents may propose a lifecycle transition and draft an
+  Experimental Decision Record (EDR).
+- Only a maintainer acting as supervisor may mark an experiment `concluded` or
+  `archived`.
+- A `decision-needed` experiment is waiting for a provisional maintainer
+  interpretation. It is not approved, stable, or release-ready.
+- The stage names `proposed`, `experiment`, `decision-needed`, `concluded`, and
+  `archived` describe activity only. Every stage retains `experimental`
+  assurance.
 
 ## Hard boundaries
 
@@ -69,7 +87,8 @@ When documents disagree, correct the non-owning document in the same change.
 ## Repository layout
 
 ```text
-docs/                     cross-toolkit contracts and decisions
+docs/                     cross-toolkit contracts, lifecycle, and decisions
+experiments/              bounded experiment dossiers and record templates
 toolkits/<capability>/
   core/                   deterministic distribution
   remote/                 optional bounded transport adapter
@@ -101,13 +120,19 @@ not restore source-path launchers or bare `python` entry points.
 
 ## Workflow
 
-1. Identify whether the change belongs to core, remote transport, agent, or
+1. Start an uncertain idea, question, or counterexample in Discussions.
+2. Convert it to an issue only after the hypothesis and smallest bounded
+   experiment are clear; create or update the experiment dossier.
+3. Identify whether the change belongs to core, remote transport, agent, or
    integration assets.
-2. Update the owning contract or schema before changing behavior.
-3. Add the smallest regression test that protects the boundary.
-4. Implement without reversing the `agent -> core` dependency direction.
-5. Run all package suites and Ruff from the workspace root.
-6. Update README examples and `CHANGELOG.md` when the public workflow changes.
+4. Update the owning contract or schema before changing behavior.
+5. Add the smallest regression or refusal case that makes the boundary
+   inspectable.
+6. Implement without reversing the `agent -> core` dependency direction.
+7. Run all package suites and Ruff from the workspace root.
+8. Update README examples and `CHANGELOG.md` when the public workflow changes.
+9. Propose lifecycle changes and EDRs explicitly; never infer promotion from a
+   merge, a passing check, or an agent response.
 
 ## Coupled edits
 
@@ -135,6 +160,10 @@ not restore source-path launchers or bare `python` entry points.
 - [ ] Public behavior is recorded under `CHANGELOG.md` → `[Unreleased]`.
 - [ ] Public wording still identifies the work as an incubator and does not
       overstate trust, safety, support, or publication intent.
+- [ ] The linked experiment dossier records the current stage, non-guarantees,
+      success and refusal cases, observations, and proposed next transition.
+- [ ] Any EDR is described as a provisional working choice, not an assurance or
+      production architecture decision.
 
 ## Dependencies and publishing
 

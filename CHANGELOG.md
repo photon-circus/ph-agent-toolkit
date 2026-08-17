@@ -12,6 +12,8 @@ production-readiness claim.
 
 - Document the repository as a living concept incubator that is not intended
   for package publication, production use, or use as a trust boundary.
+- Add a discussion-to-experiment workflow, structured contribution forms,
+  lifecycle guidance, experiment dossiers, and provisional decision records.
 - Establish the Photon Circus root documentation set and canonical agent
   operating guide.
 - Add a uv-managed workspace for reusable task toolkits.
