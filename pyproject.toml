@@ -1,10 +1,13 @@
 [project]
 name = "ph-agent-toolkit"
 version = "0.1.0"
-description = "Reusable, bounded toolkits for agent-assisted Photon Circus development"
+description = "Living source-only experiments in boundaries for agent-assisted development"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
+classifiers = [
+    "Private :: Do Not Upload",
+]
 dependencies = [
     "ph-changelog",
     "ph-changelog-agent",

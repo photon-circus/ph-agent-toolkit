@@ -37,13 +37,15 @@ jobs:
       - name: Synchronize locked tools
         run: uv sync --locked
 
-      - name: Validate structure
+      - name: Run current structure and policy checks
         run: uv run --locked ph-changelog --profile ph-eventing check CHANGELOG.md
 
-      - name: Protect released history on ordinary pull requests
+      - name: Compare released history on ordinary pull requests
         if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release/')
         shell: bash
+        env:
+          CHANGELOG_BASE_REF: ${{ github.base_ref }}
         run: |
-          git show "origin/${{ github.base_ref }}:CHANGELOG.md" > "$RUNNER_TEMP/base-CHANGELOG.md"
+          git show "origin/${CHANGELOG_BASE_REF}:CHANGELOG.md" > "$RUNNER_TEMP/base-CHANGELOG.md"
           uv run --locked ph-changelog --profile ph-eventing check \
             CHANGELOG.md --base "$RUNNER_TEMP/base-CHANGELOG.md"

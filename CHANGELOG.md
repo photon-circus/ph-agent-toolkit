@@ -1,14 +1,17 @@
 # Changelog
 
-All notable changes to this project are documented here.
-
-The format follows Keep a Changelog, and this project adheres to Semantic
-Versioning.
+This records notable changes to a living, source-only incubator. There are no
+supported release lines, published distributions, or compatibility
+commitments. The layout follows Keep a Changelog and version labels use
+Semantic Versioning syntax; neither is a maturity, stability, or
+production-readiness claim.
 
 ## [Unreleased]
 
 ### Added
 
+- Document the repository as a living concept incubator that is not intended
+  for package publication, production use, or use as a trust boundary.
 - Establish the Photon Circus root documentation set and canonical agent
   operating guide.
 - Add a uv-managed workspace for reusable task toolkits.

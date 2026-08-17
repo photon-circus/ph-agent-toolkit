@@ -1,4 +1,4 @@
-"""Deterministic changelog normalization and structured insertion."""
+"""Changelog normalization and structured insertion experiments."""
 
 from __future__ import annotations
 

@@ -1,14 +1,23 @@
 # ph-agent-toolkit
 
-`ph-agent-toolkit` is a collection of reusable, task-scoped building blocks
-for agent-assisted development across Photon Circus repositories. Each
-toolkit keeps deterministic inspection and mutation code separate from model
-prompts, contracts, and providers.
+> [!WARNING]
+> **Status: living experiment and source-only concept incubator.** This is not
+> a trusted implementation, supported package set, or release candidate. Code
+> may be incomplete, illustrative, superseded, or removed. Read
+> [the incubator status and trust model](STATUS.md) before using anything here.
 
-The repository is in early development. The first capability is changelog
-management, migrated from the former `ph-doc-prototype`.
+`ph-agent-toolkit` is a living collection of task-scoped experiments in
+systems design for layered agents. It explores where authority, evidence,
+model judgment, transport, and mutation should cross explicit boundaries
+across Photon Circus repositories. Executable code exists to test those ideas,
+not to claim production fitness.
 
-## Design boundaries
+The first experiment is changelog management, migrated from the former
+`ph-doc-prototype`.
+
+## Current boundary hypotheses
+
+The implementation currently attempts to preserve these separations:
 
 - Deterministic tools own parsing, validation, file placement, and mutation.
 - Agents receive bounded facts and return structured proposals; they do not
@@ -20,13 +29,17 @@ management, migrated from the former `ph-doc-prototype`.
 - Task contracts, profiles, examples, and integration templates are versioned
   beside the code that consumes them.
 
+These are design hypotheses under active revision. Terms such as
+"deterministic," "bounded," and "validated" have only the narrow meanings in
+[STATUS.md](STATUS.md); they are not security or maturity labels.
+
 ## Repository layout
 
 ```text
 docs/                         architecture and migration decisions
-toolkits/changelog/core/      ph-changelog deterministic package and tests
+toolkits/changelog/core/      offline transformation experiment and tests
 toolkits/changelog/agent/     ph-changelog-agent contracts/runtime and tests
-toolkits/changelog/remote/    bounded HTTP(S) retrieval adapter and tests
+toolkits/changelog/remote/    explicit HTTP(S) retrieval experiment and tests
 toolkits/changelog/examples/  supervisor and agent-output examples
 toolkits/changelog/integrations/ downstream Git and GitHub templates
 ```
@@ -41,6 +54,14 @@ ph-changelog-agent   --->  ph-changelog  <---  ph-changelog-remote
 
 See [Architecture](docs/ARCHITECTURE.md) for the ownership rules and
 [Prototype review](docs/PROTOTYPE_REVIEW.md) for the migration rationale.
+
+## Experimental use only
+
+Nothing in this workspace is intended for a package registry or supported
+distribution. If you run an experiment, pin the repository revision, use a
+disposable version-controlled checkout, exclude secrets, and inspect every
+result and file diff. Do not place these commands in an unattended or
+release-critical workflow.
 
 ## Quick start
 
@@ -77,7 +98,7 @@ uv run --locked ph-changelog-remote --help
 Only the agent command contacts a model provider. The initial provider is a
 local LM Studio-compatible endpoint and defaults to `http://127.0.0.1:1234`.
 The separate remote command makes a request only when `fetch` is explicitly
-invoked; it may follow the bounded redirects described in its
+invoked; it may follow redirects that pass the current limits described in its
 [README](toolkits/changelog/remote/README.md).
 
 ## Development checks

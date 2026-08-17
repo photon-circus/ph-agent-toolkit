@@ -1,4 +1,4 @@
-"""Versioned, lossless machine representation of a changelog snapshot."""
+"""Experimental exact-snapshot machine representation for a changelog."""
 
 from __future__ import annotations
 
@@ -164,6 +164,6 @@ def deconstruct_changelog(
 
 
 def render_machine_json(document: Mapping[str, object]) -> str:
-    """Render stable UTF-8-ready JSON for a machine document."""
+    """Render deterministic UTF-8-ready JSON for a machine document."""
 
     return json.dumps(document, indent=2, ensure_ascii=False) + "\n"

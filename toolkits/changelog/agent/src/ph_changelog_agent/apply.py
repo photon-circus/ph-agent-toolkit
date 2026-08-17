@@ -1,4 +1,4 @@
-"""Validated, snapshot-checked application of agent-generated entries."""
+"""Contract-checked experimental application of agent-generated entries."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ def apply_agent_output(
     facts: object,
     profile: Profile,
 ) -> str:
-    """Apply validated prose through the deterministic core operations."""
+    """Apply contract-checked prose through the current core operations."""
 
     validate_agent_output(output, facts, set(profile.allowed_sections))
     assert isinstance(output, dict)  # Established by validation.

@@ -1,4 +1,4 @@
-"""Bounded agent support for :mod:`ph_changelog`."""
+"""Experimental, authority-limited agent support for :mod:`ph_changelog`."""
 
 from .apply import (
     ChangelogSnapshot,

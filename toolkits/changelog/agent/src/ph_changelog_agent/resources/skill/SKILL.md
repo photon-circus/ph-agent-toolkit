@@ -1,9 +1,14 @@
 # Skill: Photon Circus changelog prose
 
+> This is an experimental prompt contract inside a source-only incubator. A
+> successful response remains an untrusted proposal that requires supervisor
+> review; this text is not a semantic or security boundary.
+
 ## Purpose
 
 Convert supervisor-supplied `TASK_FACTS` into one or more changelog entries for
-`## Unreleased`. You are a bounded prose worker, not a repository analyst.
+`## Unreleased`. You are an authority-limited drafting worker, not a repository
+analyst or semantic verifier.
 
 ## Authority
 

@@ -1,4 +1,4 @@
-"""Parser and protected-history slicing for supported changelog Markdown."""
+"""Parser and released-history slicing for the current changelog grammar."""
 
 from __future__ import annotations
 

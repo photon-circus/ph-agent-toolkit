@@ -1,4 +1,4 @@
-"""Command-line entry point for the bounded changelog agent."""
+"""Command-line entry point for an experimental changelog agent boundary."""
 
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ def _read_json(path: str | Path) -> dict[str, Any]:
 def cmd_facts_check(args: argparse.Namespace) -> int:
     profile = load_profile(args.profile)
     validate_target_sections(_read_json(args.path), set(profile.allowed_sections))
-    print(f"OK: {args.path}")
+    print(f"CURRENT FACT-CONTRACT CHECKS PASSED ({profile.name}): {args.path}")
     return 0
 
 
@@ -81,18 +81,22 @@ def cmd_run(args: argparse.Namespace) -> int:
     if args.apply:
         updated = apply_agent_output(snapshot.text, output, facts, profile)
         atomic_write_if_unchanged(args.path, snapshot, updated)
-        print(f"APPLIED: {args.path}", file=sys.stderr)
+        print(f"WROTE UNTRUSTED PROPOSAL: {args.path}", file=sys.stderr)
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ph-changelog-agent",
-        description="Bounded changelog prose worker backed by LM Studio",
+        description="Experiment with an authority-limited changelog drafting agent",
+        epilog=(
+            "INCUBATOR: output is an untrusted proposal. Contract checks do not establish "
+            "factual accuracy, semantic entailment, or safe provider behavior."
+        ),
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run = subparsers.add_parser("run", help="generate validated changelog prose")
+    run = subparsers.add_parser("run", help="generate a contract-checked prose proposal")
     run.add_argument("--facts", required=True)
     run.add_argument("--path", default="CHANGELOG.md")
     profile_default = os.environ.get("PH_CHANGELOG_PROFILE", "photon-circus")
@@ -106,13 +110,25 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="skill override (otherwise PH_CHANGELOG_SKILL_DIR or bundled assets)",
     )
-    run.add_argument("--model", default=os.environ.get("LOCAL_CHANGELOG_MODEL", "coder"))
-    run.add_argument("--base-url", default=None)
+    run.add_argument(
+        "--model",
+        default=os.environ.get("LOCAL_CHANGELOG_MODEL", "coder"),
+        help="provider model identifier (default: %(default)s)",
+    )
+    run.add_argument(
+        "--base-url",
+        default=None,
+        help="provider endpoint; task facts and current Unreleased text are disclosed to it",
+    )
     run.add_argument("--temperature", type=float, default=0.1)
-    run.add_argument("--apply", action="store_true")
+    run.add_argument(
+        "--apply",
+        action="store_true",
+        help="write the proposal after contract checks; human semantic review is still required",
+    )
     run.set_defaults(func=cmd_run)
 
-    facts = subparsers.add_parser("facts", help="validate supervisor facts")
+    facts = subparsers.add_parser("facts", help="run the supervisor-facts contract checks")
     facts_subparsers = facts.add_subparsers(dest="facts_command", required=True)
     check = facts_subparsers.add_parser("check")
     check.add_argument("path")
