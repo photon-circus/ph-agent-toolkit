@@ -6,6 +6,15 @@ validation, mutation, transport, and evidence boundaries.
 Every experiment is experimental. A concluded or archived experiment is not a
 trusted implementation or production recommendation.
 
+## Current experiments
+
+| Experiment | Stage | Question |
+| --- | --- | --- |
+| [`problem-analysis-brief-harness`](problem-analysis-brief-harness/README.md) | `proposed` | Can an offline, supervised contract turn an ordinary-language problem into a traceable, value-centred Problem Analysis Brief without acquiring decision authority? |
+
+The table records activity only. It is not a maturity, support, or adoption
+signal.
+
 ## Layout
 
 Each experiment uses a stable lowercase identifier:
