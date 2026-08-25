@@ -10,6 +10,9 @@ production-readiness claim.
 
 ### Added
 
+- Record the proposed `problem-analysis-brief-harness` experiment, including a
+  self-contained implementation-agent orientation and planned success, refusal,
+  authority, uncertainty, and deterministic-rendering cases.
 - Document the repository as a living concept incubator that is not intended
   for package publication, production use, or use as a trust boundary.
 - Add a discussion-to-experiment workflow, structured contribution forms,
